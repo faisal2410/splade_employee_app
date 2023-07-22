@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Tables\States;
 use Illuminate\Http\Request;
 
 class StateController extends Controller
@@ -11,7 +12,10 @@ class StateController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.states.index',[
+            'states'=>States::class
+
+        ]);
     }
 
     /**

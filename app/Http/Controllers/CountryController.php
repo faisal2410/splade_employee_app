@@ -60,7 +60,8 @@ class CountryController extends Controller
         $form = SpladeForm::make()
     ->action( route( 'admin.countries.update',$country ) )
       ->fill($country)
-     ->class('space-y-4')
+     ->class('space-y-4 bg-white rounded p-4')
+      ->method('PUT')
     ->fields( [
         Input::make( 'name' )->label( 'Country Name' ),
         Input::make( 'country_code' )->label( 'Country Code' ),
@@ -78,14 +79,18 @@ class CountryController extends Controller
      */
     public function update(UpdateCountryRequest $request, Country $country)
     {
-        //
+        $country->update($request->validated());
+        Splade::toast( "Country Updated Successfully" )->autoDismiss( 3 );
+        return to_route( 'admin.countries.index' );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Country $country)
     {
-        //
+        $country->delete();
+        Splade::toast( "Country Deleted Successfully" )->autoDismiss( 3 );
+        return back();
     }
 }
