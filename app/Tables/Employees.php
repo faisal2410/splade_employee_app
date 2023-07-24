@@ -77,7 +77,9 @@ $table
     ->column( 'id', sortable: true )
     ->column( 'first_name', sortable: true )
     ->column( 'last_name', sortable: true )
+    ->column( 'middle_name', sortable: true,hidden:true )
     ->column( key: 'country.name', label: 'Country' )
+    ->column( key: 'city.name', label: 'City',hidden:true )
     ->column( key: 'department.name', label: 'Department' )
     ->column( 'action' )
     ->selectFilter(
