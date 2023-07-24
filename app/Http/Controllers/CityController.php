@@ -68,24 +68,45 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(City $city)
     {
-        //
+        $form = SpladeForm::make()
+    ->action( route( 'admin.cities.update',$city ) )
+    ->fields( [
+        Input::make( 'name' )->label( 'Name' ),
+        Select::make( 'state_id' )
+            ->label( 'Choose a state' )
+            ->options( State::pluck( 'name', 'id' )->toArray() ),
+        Submit::make()->label( 'Save' ),
+
+    ] )
+    ->fill($city)
+     ->method('PUT')
+    ->class( 'space-y-4 bg-white rounded p-4' );
+
+return view( 'admin.cities.edit', [
+    'form' => $form,
+] );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateCityRequest $request, City $city)
     {
-        //
+        $city->update($request->validated());
+
+        return to_route( 'admin.cities.index' );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(City $city)
     {
-        //
+        $city->delete();
+        Splade::toast( "City Deleted Successfully" )->autoDismiss( 3 );
+        return back();
+
     }
 }
