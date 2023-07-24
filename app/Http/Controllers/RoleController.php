@@ -31,7 +31,8 @@ return view( 'admin.roles.create', [
 
      public function store(CreateRoleRequest $request)
     {
-        Role::create($request->validated());
+       $role= Role::create($request->validated());
+        $role->syncPermissions($request->permissions );
         Splade::toast( "Role Created Successfully" )->autoDismiss( 3 );
         return to_route( 'admin.roles.index' );
     }
@@ -49,6 +50,7 @@ return view( 'admin.roles.create', [
         public function update(UpdateRoleRequest $request, Role $role)
     {
         $role->update($request->validated());
+        $role->syncPermissions( $request->permissions );
         Splade::toast( "Role Updated Successfully" )->autoDismiss( 3 );
         return to_route( 'admin.roles.index' );
     }
