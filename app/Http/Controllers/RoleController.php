@@ -9,6 +9,7 @@ use ProtoneMedia\Splade\SpladeForm;
 use ProtoneMedia\Splade\Facades\Splade;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use Spatie\Permission\Models\Permission;
 use ProtoneMedia\Splade\FormBuilder\Input;
 use ProtoneMedia\Splade\FormBuilder\Submit;
 
@@ -21,17 +22,9 @@ class RoleController extends Controller
     }
 
     public function create(){
-        $form = SpladeForm::make()
-    ->action( route( 'admin.roles.store' ) )
-    ->fields( [
-        Input::make( 'name' )->label( 'Name' ),
-        Submit::make()->label( 'Save' ),
-
-    ] )
-    ->class( 'space-y-4 bg-white rounded p-4' );
 
 return view( 'admin.roles.create', [
-    'form' => $form,
+    'permissions'=>Permission::pluck('name','id')->toArray()
 ] );
     }
 
@@ -46,19 +39,9 @@ return view( 'admin.roles.create', [
 
         public function edit(Role $role)
     {
-        $form = SpladeForm::make()
-        ->action( route( 'admin.roles.update', $role ) )
-        ->fields( [
-        Input::make( 'name' )->label( 'Name' ),
-        Submit::make()->label( 'Save' ),
-
-    ] )
-    ->fill( $role )
-    ->method( 'PUT' )
-    ->class( 'space-y-4 bg-white rounded p-4' );
-
-return view( 'admin.roles.edit', [
-    'form' => $form,
+        return view( 'admin.roles.edit', [
+       'role' => $role,
+       'permissions'=>Permission::pluck('name','id')->toArray()
 ] );
     }
 
